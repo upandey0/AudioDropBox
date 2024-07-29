@@ -20,9 +20,16 @@ const AuthGetter = async (req, res) => {
             }
         })
 
-        console.log(user);
+        if(user){
+            req.user = user;
+            next()
+        } else{
+            return res.status(401).json({success: false, message: "Unautorized user"})
+        }
 
-        console.log(userData)
+        // console.log(user);
+
+        // console.log(userData)
 
     } catch (error) {
         return res.json({ message: `Some internal Error Occured`, success: false })
