@@ -7,7 +7,7 @@ const Signup = async (req, res) => {
     const { name, email, password, username } = req.body;
 
     try {
-
+        
         const existingUser = await User.findOne({
             where: {
                 [Op.or]: [
