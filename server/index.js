@@ -4,11 +4,14 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import models from './models/index.js';
 import router from './routes/routes.js';
+import { createServer } from 'http';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+
+const server = createServer(app);
 
 app.use(cors());
 app.use(cookieParser());
@@ -20,7 +23,7 @@ models.sequelize.sync()
     console.log('Database synchronized');
 
     // Start the server
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })
@@ -33,3 +36,5 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', router);
+
+export default server;
