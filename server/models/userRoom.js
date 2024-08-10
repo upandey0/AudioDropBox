@@ -1,13 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 
 class UserRoom extends Model {
-  static init(sequelize, DataTypes) {
+  static init(sequelize) {
     return super.init({
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-      },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -28,14 +23,6 @@ class UserRoom extends Model {
         type: DataTypes.ENUM('host', 'participant'),
         allowNull: false
       },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-      }
     }, {
       sequelize,
       modelName: 'UserRoom'

@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 
 class Room extends Model {
-  static init(sequelize, DataTypes) {
+  static init(sequelize) {
     return super.init({
       id: {
         type: DataTypes.INTEGER,
@@ -20,18 +20,6 @@ class Room extends Model {
           key: 'id'
         }
       },
-      participants: {
-        type: DataTypes.JSON,
-        defaultValue: []
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-      }
     }, {
       sequelize,
       modelName: 'Room'
@@ -39,9 +27,11 @@ class Room extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'hostId' });
+    this.belongsTo(models.User, { foreignKey: 'hostId', as: 'host' });
     this.belongsToMany(models.User, { through: models.UserRoom, foreignKey: 'roomId' });
+    this.hasMany(models.Message, { foreignKey: 'roomId' });
   }
 }
+
 
 export default Room;

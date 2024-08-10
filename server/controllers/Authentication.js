@@ -21,16 +21,11 @@ const Signup = async (req, res) => {
             return res.status(404).json({message: "Some required fields are missing", success: false})
         }
 
-
-
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists with this email or username.' });
-        }
+        } 
 
-        
-
-        const salt = await bcryptjs.genSalt(10); // Adjust the salt rounds as needed
-
+        const salt = await bcryptjs.genSalt(10); 
         const hashedPassword = await bcryptjs.hash(password, salt);
 
         const newUser = await User.create({
@@ -83,14 +78,12 @@ const SignIn = async (req,res)=> {
         return res.status(400).json({ success: false, message: 'Invalid credentials' });
     }
 
-    // Generate a token or set session
+    // Generate a token 
     const token = jwt.sign({ id: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
 
-    // Set the token in cookies (or you can send it in the response)
+    // Set the token in cookies 
     res.cookie('token', token, { httpOnly: true });
-
     res.setHeader('Authorization', `Bearer ${token}`);
-
 
     // Send response
     return res.status(200).json({ success: true, message: 'Sign in successful', user: { id: user.id, username: user.username, email: user.email } });
