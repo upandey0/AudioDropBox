@@ -26,8 +26,8 @@ const handleWebSocketRequest = (request) => {
   let user;
   if (!rooms.has(roomId)) {
     const user = User.findByPk(userId)
-                  .then((data)=> "")
-                  .catch((error)=> {connection.close(); return} )
+                  .then((data)=> data)
+                  .catch((error)=> {connection.close(); return})
     
     rooms.set(roomId, new Map());
   }
@@ -107,6 +107,12 @@ const roomCreation = async (req, res) => {
       name,
       hostId: user.id,
     });
+    const userRoom = await UserRoom.create({
+      userId : user.id,
+      roomId : newRoom.id,
+      role: 'host'
+    })
+    userRoom.save()
     const url = uuidv4() + '/' + newRoom.id;
     return res.status(201).json({ success: true, message: "Room Created Successfully", data: newRoom, url });
   } catch (error) {
